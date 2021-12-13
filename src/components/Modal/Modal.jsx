@@ -1,5 +1,5 @@
 // import PropTypes from "prop-types";
-import style from "../Modal.module.css";
+import style from "./Modal.module.css";
 
 const Modal = () => {
   return (

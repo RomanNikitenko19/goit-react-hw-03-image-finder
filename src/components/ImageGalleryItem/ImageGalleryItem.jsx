@@ -1,12 +1,12 @@
 // import PropTypes from "prop-types";
-import style from "../ImageGalleryItem.module.css";
+import style from "./ImageGalleryItem.module.css";
 
-const ImageGalleryItem = () => {
+const ImageGalleryItem = ({smalImg, largeImg}) => {
   return (
     <>
       {
         <li className={style.ImageGalleryItem}>
-          <img className={style.ImageGalleryItem_image} src="" alt="" />
+          <img className={style.ImageGalleryItem_image} src={smalImg} alt="" />
         </li>
       }
     </>
