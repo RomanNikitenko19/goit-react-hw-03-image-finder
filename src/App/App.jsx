@@ -1,29 +1,28 @@
 import React, { Component } from "react";
 import { fetchData } from "../services/Api/api";
+import LoaderSpinner from "../components/Loader/LoaderSpinner";
 import Searchbar from "../components/Searchbar/Searchbar";
 import ImageGallery from "../components/ImageGallery/ImageGallery";
 import Button from "../components/Button/Button";
+import Modal from "../components/Modal"
 import "./App.module.css";
 
-// await fetchData("cat", "1").then((res) => console.log(res));//data.hits
 class App extends Component {
   state = {
     images: [],
     request: "",
-    // isLoading: false,
-    // error: null,
+    isOpen: false,
     page: 1,
+    largeImageURL: "",
   };
 
   async componentDidUpdate(prevProps, prevState, snapshot) {
     const { request, page } = this.state;
 
     if (prevState.page !== page || prevState.request !== request) {
-      // fetchData(request).then(data => console.log(data.hits));//totalHits, hits//webformatURL,largeImageURL,id
 
       try {
         const data = await fetchData(request, page);
-        // console.log(data);
         this.setState((prevState) => ({ images: [...prevState.images, ...data.hits] }));
       } catch (error) {
         this.setState({ error: error.message });
@@ -38,15 +37,26 @@ class App extends Component {
   };
 
   increasePageRequest = () => {
-    this.setState(prevState => ({page: prevState.page + 1}))
+    this.setState((prevState) => ({ page: prevState.page + 1 }));
+  };
+
+  toggleModal = (event) => {
+    this.setState(prevState => ({ isOpen: !prevState.isOpen}));
+  };
+
+  getAPicture = value => {
+    this.setState({ largeImageURL: value });
   }
 
   render() {
+    const { isOpen, images, largeImageURL } = this.state;
     return (
       <>
         <Searchbar addDataForRequest={this.addDataForRequest} />
-        <ImageGallery images={this.state.images} />
-        <Button increasePageRequest={this.increasePageRequest} />
+        <ImageGallery images={images} getAPicture={this.getAPicture} toggleModal={this.toggleModal} />
+        <LoaderSpinner />
+        {images.length > 0 && <Button increasePageRequest={this.increasePageRequest} />}
+        {isOpen && <Modal largeImageURL={largeImageURL} toggleModal={this.toggleModal} />}
       </>
     );
   }

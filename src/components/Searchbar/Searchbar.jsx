@@ -9,12 +9,14 @@ class Searchbar extends Component {
 
   handleChange = event => {
     const value = event.target.value;
-    this.setState({ searchValue: value })
+    this.setState({ searchValue: value });
   }
 
   handelSubmit = event => {
     event.preventDefault();
-    this.props.addDataForRequest(this.state.searchValue);
+    if (this.state.searchValue.trim() === "") return;
+    this.props.addDataForRequest(this.state.searchValue.toLowerCase());
+    this.setState({ searchValue: "" });
   }
 
   render() {
