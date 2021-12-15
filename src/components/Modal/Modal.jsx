@@ -16,13 +16,13 @@ class Modal extends Component {
 
   onEscPress = event => {
     if (event.code === "Escape") {
-      this.props.ToggleModal();
+      this.props.toggleModal();
     }
   };
 
   onBackdropClick = event => {
     if (event.currentTarget === event.target) {
-      this.props.ToggleModal();
+      this.props.toggleModal();
     }
   };
 
@@ -46,7 +46,7 @@ class Modal extends Component {
 
 Modal.propTypes = {
   largeImageURL: PropTypes.string.isRequired,
-  isTogleModal: PropTypes.func.isRequired,
+  toggleModal: PropTypes.func.isRequired,
 };
 
 export default Modal;

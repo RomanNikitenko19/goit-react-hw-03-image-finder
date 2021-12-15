@@ -15,15 +15,30 @@ class App extends Component {
     page: 1,
     largeImageURL: "",
   };
+//1
+  // async componentDidUpdate(prevProps, prevState, snapshot) {
+  //   const { request, page } = this.state;
 
+  //   if (prevState.page !== page || prevState.request !== request) {
+
+  //     try {
+  //       const data = await fetchData(request, page);
+  //       this.setState((prevState) => ({ images: [...prevState.images, ...data.hits] }));
+  //     } catch (error) {
+  //       this.setState({ error: error.message });
+  //     } finally {
+  //       this.setState({ loading: false });
+  //     }
+  //   }
+  // }
+//2
   async componentDidUpdate(prevProps, prevState, snapshot) {
     const { request, page } = this.state;
 
     if (prevState.page !== page || prevState.request !== request) {
-
       try {
         const data = await fetchData(request, page);
-        this.setState((prevState) => ({ images: [...prevState.images, ...data.hits] }));
+        prevState.request !== request ? this.setState({ images: [...data.hits], page: 1}) : this.setState(prevState => ({images: [...prevState.images, ...data.hits]}));
       } catch (error) {
         this.setState({ error: error.message });
       } finally {
@@ -41,12 +56,12 @@ class App extends Component {
   };
 
   toggleModal = (event) => {
-    this.setState(prevState => ({ isOpen: !prevState.isOpen}));
+    this.setState((prevState) => ({ isOpen: !prevState.isOpen }));
   };
 
-  getAPicture = value => {
+  getAPicture = (value) => {
     this.setState({ largeImageURL: value });
-  }
+  };
 
   render() {
     const { isOpen, images, largeImageURL } = this.state;
