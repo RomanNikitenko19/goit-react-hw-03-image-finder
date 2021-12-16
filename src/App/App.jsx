@@ -15,7 +15,7 @@ class App extends Component {
     page: 1,
     largeImageURL: "",
   };
-//1
+  //1
   // async componentDidUpdate(prevProps, prevState, snapshot) {
   //   const { request, page } = this.state;
 
@@ -23,7 +23,7 @@ class App extends Component {
 
   //     try {
   //       const data = await fetchData(request, page);
-  //       this.setState((prevState) => ({ images: [...prevState.images, ...data.hits] }));
+  //       this.setState((prevState) => ({ images: [...prevState.images, ...data.hits] }));//prevState.request !== request ?data.hits:[...prevState.images, ...data.hits]
   //     } catch (error) {
   //       this.setState({ error: error.message });
   //     } finally {
@@ -31,14 +31,16 @@ class App extends Component {
   //     }
   //   }
   // }
-//2
+  //2
   async componentDidUpdate(prevProps, prevState, snapshot) {
     const { request, page } = this.state;
 
     if (prevState.page !== page || prevState.request !== request) {
       try {
         const data = await fetchData(request, page);
-        prevState.request !== request ? this.setState({ images: [...data.hits], page: 1}) : this.setState(prevState => ({images: [...prevState.images, ...data.hits]}));
+        prevState.request !== request
+          ? this.setState({ images: [...data.hits], page: 1 })
+          : this.setState((prevState) => ({ images: [...prevState.images, ...data.hits] }));
       } catch (error) {
         this.setState({ error: error.message });
       } finally {
@@ -46,6 +48,23 @@ class App extends Component {
       }
     }
   }
+
+  // 3 ???
+  // async componentDidUpdate(prevProps, prevState, snapshot) {
+  //   const { request, page } = this.state;
+
+  //   if (prevState.page !== page || prevState.request !== request) {
+  //     try {
+  //       const data = await fetchData(request, page);
+  //       this.setState((prevState) => ({ images: [...prevState.images, ...data.hits] })); //prevState.request !== request ? data.hits : [...prevState.images, ...data.hits]
+
+  //     } catch (error) {
+  //       this.setState({ error: error.message });
+  //     } finally {
+  //       this.setState({ loading: false });
+  //     }
+  //   }
+  // }
 
   addDataForRequest = (value) => {
     return this.setState({ request: value });
